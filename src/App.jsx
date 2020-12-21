@@ -39,8 +39,8 @@ function App() {
         <Router history={history}>
             <Container>
                 <Row className="justify-content-right">
-                    <Col md={{ span: 2, offset: 10 }}>
-                        {token && <Button variant="secondary" onClick={logOut}>Log out</Button>}
+                    <Col style={{ 'margin-top': '20px', 'margin-bottom': '20px' }} md={{ span: 1.5, offset: 9 }}>
+                        {token && <Button  variant="secondary" onClick={logOut}>Log out</Button>}
                     </Col>
                 </Row>
                 <Row>

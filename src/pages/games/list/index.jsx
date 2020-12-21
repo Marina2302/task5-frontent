@@ -12,6 +12,7 @@ export function GamesList(props) {
     const me = jwt.decode(token).sub
     const [games, setGames] = useState([])
     const [tags, setTags] = useState([])
+    const [filerTags, setFilterTags] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -79,7 +80,19 @@ export function GamesList(props) {
     }
 
     const handleChange = values => {
+        setFilterTags(values)
         axios.get('/games', { params: { tags: values ? values.map(tag => tag.value) : [] }, paramsSerializer: function (params) {
+                return Qs.stringify(params, {arrayFormat: 'brackets'})
+            }, })
+            .then(res => {
+                if (res.status === 200) {
+                    setGames(res.data)
+                }
+            })
+    }
+
+    const refreshPage = () => {
+        axios.get('/games', { params: { tags: filerTags ? filerTags.map(tag => tag.value) : [] }, paramsSerializer: function (params) {
                 return Qs.stringify(params, {arrayFormat: 'brackets'})
             }, })
             .then(res => {
@@ -91,11 +104,14 @@ export function GamesList(props) {
 
     return (
         <div>
-            <Row className="justify-content-right">
+            <Row style={{ 'flex-flow': 'row', 'margin-bottom': '20px', 'align-items': 'center' }} className="justify-content-right">
                 <Col md={{span: 6, offset: 0}}>
                     <Dropdown options={tags} placeholder="select tags" handleChange={handleChange}/>
                 </Col>
-                <Col md={{span: 2, offset: 10}}>
+                <Col md={{span: 1, offset: 0}}>
+                    <Button variant="link" onClick={() => refreshPage()}>Refresh</Button>
+                </Col>
+                <Col md={{span: 2, offset: 3}}>
                     <Link to='/games/create'>Create new game</Link>
                 </Col>
             </Row>

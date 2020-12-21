@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react'
 import axios from 'axios'
 import jwt from "jsonwebtoken";
 import { Link } from 'react-router-dom'
+import {Button, Table} from "react-bootstrap";
 
 export function Game(props) {
     const token = localStorage.getItem('token')
@@ -23,7 +24,6 @@ export function Game(props) {
         })
         .finally(() => {
             if (!game || (game && !game.winner)) {
-                console.log(game)
                 setTimeoutRequest(game)
             }
         })
@@ -85,19 +85,16 @@ export function Game(props) {
     const defineRelation = key => game[key] ? game[key] === game.playerOne ? 'X' : 'O' : null
 
     const renderField = () => {
-        if (game.winner) {
-            return (
-                <div>Winner is {game.winner}</div>
-            )
-        }
         return game.playerTwo
             ? (
                 <div style={{
+                    opacity: `${game.winner ? '30%' : '100%'}`,
+                    'pointer-events': `${game.winner ? 'none' : 'auto'}`,
                     border: "4px solid #ec0c2b",
                     borderRadius: "10px",
                     width: "250px",
                     height: "250px",
-                    margin: "0 auto",
+                    margin: "50px auto",
                     display: "grid",
                     gridTemplate: "repeat(3, 1fr) / repeat(3, 1fr)",
                 }}>
@@ -110,7 +107,6 @@ export function Game(props) {
                     <Square value={defineRelation('moveSeven')} onClick={() => onClick("moveSeven")}/>
                     <Square value={defineRelation('moveEight')} onClick={() => onClick("moveEight")}/>
                     <Square value={defineRelation('moveNine')} onClick={() => onClick("moveNine")}/>
-
                 </div>
             )
             : <div>Witting for a second player</div>
@@ -120,19 +116,30 @@ export function Game(props) {
         if (game) {
             return (
                 <div>
-                    <div>
-                        <span>Game </span>
-                        <span>{game.name}</span>
-                        <span> between </span>
-                        <span>{game.playerOne}</span>
-                        <span> and </span>
-                        <span>{game.playerTwo}</span>
-                    </div>
-                    <div>{game.tags.map(tag => `#${tag}`).join(' ')}</div>
+                    <Link to='/games'>Back to games list</Link>
+                    <Table style={{ 'margin-top': "10px" }} striped bordered hover size="sm">
+                        <thead>
+                        <tr>
+                            <th>Game name</th>
+                            <th>Game tags</th>
+                            <th>Player One</th>
+                            <th>Player Two</th>
+                            <th>Winner</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr key={game.id}>
+                            <td>{game.name}</td>
+                            <td>{game.tags.map(tag => `#${tag}`).join(' ')}</td>
+                            <td>{game.playerOne}</td>
+                            <td>{game.playerTwo}</td>
+                            <td>{game.winner}</td>
+                        </tr>
+                        </tbody>
+                    </Table>
                     <div>
                         {renderField()}
                     </div>
-                    <Link to='/games'>Back to games list</Link>
                 </div>
             )
         }

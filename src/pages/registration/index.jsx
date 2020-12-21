@@ -39,6 +39,6 @@ export function Registration(props) {
         <Button variant="primary" type="submit" onClick={signup}>
             Register
         </Button>
-        <Link to='/login'>Login</Link>
+        <Link style={{ padding: '0 20px' }} to='/login'>Login</Link>
     </Form>
 }

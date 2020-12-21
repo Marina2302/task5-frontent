@@ -40,6 +40,7 @@ export function Login(props) {
         <Button variant="primary" type="submit" onClick={signin}>
             Login
         </Button>
-        <Link to='/register'>Register</Link>
+        <Link style={{ margin: "0 20px"}} to='/register'>Register</Link>
+
     </Form>
 }

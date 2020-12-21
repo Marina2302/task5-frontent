@@ -51,11 +51,11 @@ export function CreateNewGame(props) {
         </Form.Group>
         <Form.Group >
             <Form.Label>Tags</Form.Label>
-            <Dropdown options={existingTags} handleChange={handleChange} />
+            <Dropdown options={existingTags} handleChange={handleChange} placeholder='Select tags' />
         </Form.Group>
         <Button variant="primary" type="submit" onClick={create}>
             Create new game
         </Button>
-        <Link to='/games'>All games</Link>
+        <Link style={{ margin: '0 20px' }} to='/games'>Back to all games</Link>
     </Form>
 }
