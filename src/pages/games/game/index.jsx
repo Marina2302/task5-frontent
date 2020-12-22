@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react'
 import axios from 'axios'
 import jwt from "jsonwebtoken";
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {Button, Table} from "react-bootstrap";
 
 export function Game(props) {
@@ -37,7 +37,8 @@ export function Game(props) {
     useEffect(() => {
         fetchGame()
         setTimeoutRequest()
-        return clearTimeout(timeout)
+
+        return () => clearTimeout(timeout)
     }, [gameId])
 
     const moves = {
@@ -117,7 +118,7 @@ export function Game(props) {
             return (
                 <div>
                     <Link to='/games'>Back to games list</Link>
-                    <Table style={{ 'margin-top': "10px" }} striped bordered hover size="sm">
+                    <Table style={{'margin-top': "10px"}} striped bordered hover size="sm">
                         <thead>
                         <tr>
                             <th>Game name</th>
@@ -145,7 +146,10 @@ export function Game(props) {
         }
         return null
     }
-
+    if (game && game.winner && window.confirm("The winner is " + game.winner)) {
+        props.history.push('/games')
+        return null;
+    }
     return (
         <div>
             {renderGame()}
